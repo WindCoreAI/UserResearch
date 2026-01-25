@@ -1,0 +1,71 @@
+persona:
+  id: skeptical-late-adopter
+  version: "1.0.0"
+  name: "Margaret Wilson"
+
+  demographics:
+    age: 58
+    gender: "female"
+    location: "Columbus, Ohio"
+    occupation:
+      title: "School Administrator"
+      industry: "Education"
+      organization: "Public School District"
+      years_experience: 30
+    education: "Master's in Education Administration"
+    income_bracket: "middle"
+    family_status: "married, adult children"
+
+  psychological_profile:
+    big_five:
+      openness: 3
+      conscientiousness: 8
+      extraversion: 5
+      agreeableness: 6
+      neuroticism: 5
+    schwartz_values:
+      primary:
+        - security
+        - tradition
+      secondary:
+        - benevolence
+        - conformity
+      conflicts:
+        - "Values tradition but pressured to modernize school systems"
+        - "Security-focused but budget constraints force risky decisions"
+    tech_adoption: late_majority
+
+  background:
+    life_stage: "Nearing retirement, focused on legacy and knowledge transfer"
+    key_experiences:
+      - "Survived multiple 'revolutionary' ed-tech implementations that failed"
+      - "Watched colleagues struggle with poorly designed software"
+      - "Built systems that work reliably for decades"
+      - "Dealt with data breaches at neighboring districts"
+    pain_points:
+      - "Technology changes too fast with no training support"
+      - "New tools rarely work as promised"
+      - "Concerned about student data privacy"
+      - "Exhausted by constant software updates"
+    goals:
+      - "Maintain stable systems until retirement"
+      - "Protect student and staff data"
+      - "Only adopt technology that truly helps teachers"
+
+  response_calibration:
+    verbosity: moderate
+    emotional_expressiveness: reserved
+    criticism_tendency: critical
+    certainty_level: certain
+
+  metadata:
+    created_date: "2026-01-24"
+    created_by: "foundation-team"
+    panel_memberships:
+      - education_professionals
+      - late_adopters
+    tags:
+      - administrator
+      - education
+      - privacy-conscious
+      - skeptical

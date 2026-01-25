@@ -33,6 +33,8 @@ yarn-error.log*
 # Dependencies
 node_modules/
 vendor/
+venv/
+.venv/
 
 # Build outputs
 dist/

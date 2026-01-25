@@ -1,0 +1,320 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://syntheticusers.dev/schemas/persona/v1.0.0",
+  "title": "Persona Schema",
+  "description": "Schema for synthetic user persona definitions",
+  "type": "object",
+  "required": ["persona"],
+  "properties": {
+    "persona": {
+      "type": "object",
+      "required": ["id", "version", "name", "demographics", "psychological_profile", "background", "response_calibration"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "description": "Unique identifier in kebab-case"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Human-readable display name"
+        },
+        "demographics": {
+          "$ref": "#/definitions/Demographics"
+        },
+        "psychological_profile": {
+          "$ref": "#/definitions/PsychologicalProfile"
+        },
+        "background": {
+          "$ref": "#/definitions/Background"
+        },
+        "response_calibration": {
+          "$ref": "#/definitions/ResponseCalibration"
+        },
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Demographics": {
+      "type": "object",
+      "required": ["age", "gender", "location", "occupation"],
+      "properties": {
+        "age": {
+          "type": "integer",
+          "minimum": 18,
+          "maximum": 100,
+          "description": "Age in years (adult users only)"
+        },
+        "gender": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Gender identity"
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Geographic location"
+        },
+        "occupation": {
+          "$ref": "#/definitions/Occupation"
+        },
+        "education": {
+          "type": "string",
+          "description": "Highest education level"
+        },
+        "income_bracket": {
+          "type": "string",
+          "description": "Relative income level"
+        },
+        "family_status": {
+          "type": "string",
+          "description": "Family/relationship status"
+        }
+      }
+    },
+    "Occupation": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Job title"
+        },
+        "industry": {
+          "type": "string",
+          "description": "Industry sector"
+        },
+        "organization": {
+          "type": "string",
+          "description": "Company/organization name"
+        },
+        "years_experience": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Years in current field"
+        }
+      }
+    },
+    "PsychologicalProfile": {
+      "type": "object",
+      "required": ["big_five", "schwartz_values", "tech_adoption"],
+      "properties": {
+        "big_five": {
+          "$ref": "#/definitions/BigFive"
+        },
+        "schwartz_values": {
+          "$ref": "#/definitions/SchwartzValues"
+        },
+        "tech_adoption": {
+          "$ref": "#/definitions/TechAdoptionCategory"
+        }
+      }
+    },
+    "BigFive": {
+      "type": "object",
+      "required": ["openness", "conscientiousness", "extraversion", "agreeableness", "neuroticism"],
+      "properties": {
+        "openness": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Openness to experience (1-10)"
+        },
+        "conscientiousness": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Organization and dependability (1-10)"
+        },
+        "extraversion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Social energy and assertiveness (1-10)"
+        },
+        "agreeableness": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Cooperation and trust (1-10)"
+        },
+        "neuroticism": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Emotional reactivity (1-10)"
+        }
+      }
+    },
+    "SchwartzValues": {
+      "type": "object",
+      "required": ["primary"],
+      "properties": {
+        "primary": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/definitions/SchwartzValue"
+          },
+          "description": "Primary value priorities (minimum 2 required)"
+        },
+        "secondary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SchwartzValue"
+          },
+          "description": "Secondary values"
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Described value tensions"
+        }
+      }
+    },
+    "SchwartzValue": {
+      "type": "string",
+      "enum": [
+        "self_direction",
+        "stimulation",
+        "hedonism",
+        "achievement",
+        "power",
+        "security",
+        "conformity",
+        "tradition",
+        "benevolence",
+        "universalism"
+      ],
+      "description": "One of the ten Schwartz universal values"
+    },
+    "TechAdoptionCategory": {
+      "type": "string",
+      "enum": ["innovator", "early_adopter", "early_majority", "late_majority", "laggard"],
+      "description": "Rogers' Diffusion of Innovations category"
+    },
+    "Background": {
+      "type": "object",
+      "required": ["life_stage", "pain_points", "goals"],
+      "properties": {
+        "life_stage": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Current life phase description"
+        },
+        "key_experiences": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Formative experiences"
+        },
+        "pain_points": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "description": "Current frustrations/challenges"
+        },
+        "goals": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "description": "Aspirations and objectives"
+        },
+        "domain_context": {
+          "$ref": "#/definitions/DomainContext"
+        }
+      }
+    },
+    "DomainContext": {
+      "type": "object",
+      "properties": {
+        "relevant_experience": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Prior experience with domain"
+        },
+        "knowledge_level": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Expertise levels by topic"
+        }
+      }
+    },
+    "ResponseCalibration": {
+      "type": "object",
+      "required": ["verbosity", "emotional_expressiveness", "criticism_tendency"],
+      "properties": {
+        "verbosity": {
+          "type": "string",
+          "enum": ["concise", "moderate", "detailed"],
+          "description": "Response length tendency"
+        },
+        "emotional_expressiveness": {
+          "type": "string",
+          "enum": ["reserved", "moderate", "expressive"],
+          "description": "Emotional display level"
+        },
+        "criticism_tendency": {
+          "type": "string",
+          "enum": ["positive", "balanced", "critical"],
+          "description": "Positive vs critical lean"
+        },
+        "certainty_level": {
+          "type": "string",
+          "enum": ["certain", "questioning", "uncertain"],
+          "description": "Confidence in opinions"
+        }
+      }
+    },
+    "Metadata": {
+      "type": "object",
+      "properties": {
+        "created_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Creation date (ISO format)"
+        },
+        "created_by": {
+          "type": "string",
+          "description": "Creator identifier"
+        },
+        "panel_memberships": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Panels this persona belongs to"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Searchable tags"
+        }
+      }
+    }
+  }
+}

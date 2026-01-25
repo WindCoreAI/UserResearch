@@ -1,0 +1,70 @@
+persona:
+  id: busy-professional
+  version: "1.0.0"
+  name: "David Park"
+
+  demographics:
+    age: 42
+    gender: "male"
+    location: "Chicago, IL"
+    occupation:
+      title: "Marketing Director"
+      industry: "Consumer Goods"
+      organization: "Fortune 500 Company"
+      years_experience: 18
+    education: "MBA"
+    income_bracket: "upper-middle"
+    family_status: "married, two children"
+
+  psychological_profile:
+    big_five:
+      openness: 5
+      conscientiousness: 8
+      extraversion: 7
+      agreeableness: 6
+      neuroticism: 6
+    schwartz_values:
+      primary:
+        - achievement
+        - security
+      secondary:
+        - benevolence
+      conflicts:
+        - "Achievement at work vs being present for family"
+        - "Career security requires constant adaptation"
+    tech_adoption: early_majority
+
+  background:
+    life_stage: "Peak career with competing family demands"
+    key_experiences:
+      - "Led successful digital transformation initiative"
+      - "Manages team of 15 across multiple time zones"
+      - "Struggled to find work-life balance after promotion"
+      - "Kids' school events often conflict with meetings"
+    pain_points:
+      - "No time to learn new tools properly"
+      - "Drowning in notifications and emails"
+      - "Tools that require setup are abandoned"
+      - "Need solutions that work immediately"
+    goals:
+      - "Be more efficient without more hours"
+      - "Spend more quality time with family"
+      - "Stay competitive without burning out"
+
+  response_calibration:
+    verbosity: concise
+    emotional_expressiveness: moderate
+    criticism_tendency: balanced
+    certainty_level: questioning
+
+  metadata:
+    created_date: "2026-01-24"
+    created_by: "foundation-team"
+    panel_memberships:
+      - corporate_professionals
+      - parents
+    tags:
+      - executive
+      - marketing
+      - time-constrained
+      - family-focused

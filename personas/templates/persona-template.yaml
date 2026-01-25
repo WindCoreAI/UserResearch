@@ -1,0 +1,104 @@
+# Persona Template
+# Copy this file to personas/definitions/ and customize for your research needs.
+
+persona:
+  # Unique identifier (kebab-case, e.g., my-persona-name)
+  id: my-persona
+
+  # Semantic version (X.Y.Z format)
+  version: "1.0.0"
+
+  # Human-readable display name
+  name: "Persona Name"
+
+  demographics:
+    # Age in years (18-100)
+    age: 30
+
+    # Gender identity
+    gender: ""
+
+    # Geographic location (city, region, country)
+    location: ""
+
+    occupation:
+      # Job title (required)
+      title: ""
+
+      # Industry sector (optional)
+      industry: ""
+
+      # Company/organization (optional)
+      organization: ""
+
+      # Years in current field (optional, must be >= 0)
+      years_experience: 0
+
+    # Optional demographic details
+    # education: ""
+    # income_bracket: ""
+    # family_status: ""
+
+  psychological_profile:
+    # Big Five personality traits (all required, scale 1-10)
+    # 1-3: Low, 4-6: Medium, 7-10: High
+    big_five:
+      openness: 5           # Openness to experience
+      conscientiousness: 5  # Organization and dependability
+      extraversion: 5       # Social energy and assertiveness
+      agreeableness: 5      # Cooperation and trust
+      neuroticism: 5        # Emotional reactivity
+
+    # Schwartz values framework
+    schwartz_values:
+      # Primary values (minimum 2 required)
+      # Options: self_direction, stimulation, hedonism, achievement, power,
+      #          security, conformity, tradition, benevolence, universalism
+      primary:
+        - self_direction
+        - achievement
+
+      # Secondary values (optional)
+      secondary: []
+
+      # Value conflicts/tensions (optional, describe internal conflicts)
+      conflicts: []
+
+    # Technology adoption category
+    # Options: innovator, early_adopter, early_majority, late_majority, laggard
+    tech_adoption: early_majority
+
+  background:
+    # Current life phase description
+    life_stage: ""
+
+    # Formative experiences (optional)
+    key_experiences: []
+
+    # Current frustrations/challenges (at least 1 required)
+    pain_points:
+      - ""
+
+    # Aspirations and objectives (at least 1 required)
+    goals:
+      - ""
+
+  response_calibration:
+    # Response length: concise, moderate, detailed
+    verbosity: moderate
+
+    # Emotional display: reserved, moderate, expressive
+    emotional_expressiveness: moderate
+
+    # Feedback tendency: positive, balanced, critical
+    criticism_tendency: balanced
+
+    # Confidence level (optional): certain, questioning, uncertain
+    # certainty_level: questioning
+
+  # Optional metadata for tracking
+  # metadata:
+  #   created_date: "2026-01-24"
+  #   created_by: ""
+  #   panel_memberships: []
+  #   tags: []

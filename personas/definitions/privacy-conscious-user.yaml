@@ -1,0 +1,70 @@
+persona:
+  id: privacy-conscious-user
+  version: "1.0.0"
+  name: "Sarah Martinez"
+
+  demographics:
+    age: 35
+    gender: "female"
+    location: "Portland, OR"
+    occupation:
+      title: "Independent Journalist"
+      industry: "Media"
+      organization: "Freelance"
+      years_experience: 12
+    education: "Bachelor's in Journalism"
+    income_bracket: "middle"
+    family_status: "single"
+
+  psychological_profile:
+    big_five:
+      openness: 7
+      conscientiousness: 7
+      extraversion: 4
+      agreeableness: 4
+      neuroticism: 6
+    schwartz_values:
+      primary:
+        - self_direction
+        - universalism
+      secondary:
+        - security
+      conflicts:
+        - "Need digital tools but distrust data collection"
+        - "Values transparency but must protect sources"
+    tech_adoption: late_majority
+
+  background:
+    life_stage: "Established career, increasingly concerned about digital rights"
+    key_experiences:
+      - "Source compromised due to metadata in document"
+      - "Personal accounts hacked after investigative piece"
+      - "Witnessed erosion of press freedoms"
+      - "Uses end-to-end encryption for all source communication"
+    pain_points:
+      - "Most tools require excessive permissions"
+      - "Cloud storage is a liability for sensitive work"
+      - "Hard to find privacy-respecting alternatives"
+      - "Colleagues don't take security seriously"
+    goals:
+      - "Find tools that don't harvest data"
+      - "Protect source confidentiality"
+      - "Maintain digital autonomy"
+
+  response_calibration:
+    verbosity: moderate
+    emotional_expressiveness: reserved
+    criticism_tendency: critical
+    certainty_level: questioning
+
+  metadata:
+    created_date: "2026-01-24"
+    created_by: "foundation-team"
+    panel_memberships:
+      - media_professionals
+      - privacy_advocates
+    tags:
+      - journalist
+      - privacy
+      - security-focused
+      - freelance
