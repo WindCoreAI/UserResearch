@@ -1,0 +1,48 @@
+{# Research prompt template for injecting questions into persona sessions #}
+{{ persona_prompt }}
+
+---
+
+## Research Question
+
+{{ question.text }}
+
+{% if question.type.value == 'rating' %}
+**Question Type**: Rating Scale ({{ question.scale_min }}-{{ question.scale_max }})
+
+Please provide:
+1. Your rating as a number between {{ question.scale_min }} and {{ question.scale_max }}
+2. Your reasoning for this rating
+{% elif question.type.value == 'multiple_choice' %}
+**Question Type**: Multiple Choice
+
+Please select from these options:
+{% for option in question.options %}
+- {{ option }}
+{% endfor %}
+
+Provide your selection and explain your reasoning.
+{% else %}
+**Question Type**: Open-Ended
+
+Please share your honest thoughts and perspective on this question.
+{% endif %}
+
+---
+
+## Response Format
+
+Please structure your response as follows:
+
+1. **OVERALL_IMPRESSION**: Your gut reaction in 1-2 sentences
+2. **SENTIMENT**: One of: positive, negative, mixed, neutral
+{% if question.type.value == 'rating' %}
+3. **RATING**: Your numeric rating ({{ question.scale_min }}-{{ question.scale_max }})
+{% elif question.type.value == 'multiple_choice' %}
+3. **SELECTED_OPTION**: Your chosen option from the list
+{% endif %}
+3. **CONCERNS**: List any concerns you have (bullet points, or "None" if none)
+4. **SUGGESTIONS**: List any suggestions for improvement (bullet points, or "None" if none)
+5. **DETAILED_RESPONSE**: Your full, detailed thoughts as {{ persona_name }}
+
+Remember to respond authentically as your persona. Your feedback is valuable because it reflects genuine personality-consistent reactions, not generic positivity.

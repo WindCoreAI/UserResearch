@@ -1,6 +1,7 @@
 """CLI entry point for research-cli.
 
-Provides commands for persona management, validation, and prompt generation.
+Provides commands for persona management, validation, prompt generation,
+and research session execution.
 """
 
 import json
@@ -10,6 +11,7 @@ from typing import Optional
 
 import click
 import yaml
+from rich.console import Console
 
 from services.persona_loader import PersonaLoader
 
@@ -17,11 +19,14 @@ from services.persona_loader import PersonaLoader
 DEFAULT_PERSONAS_DIR = Path("personas/definitions")
 DEFAULT_TEMPLATES_DIR = Path("personas/templates")
 
+# Rich console for formatted output
+console = Console()
+
 
 @click.group()
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output")
 @click.option("--quiet", "-q", is_flag=True, help="Suppress non-essential output")
-@click.version_option(version="0.1.0", prog_name="research-cli")
+@click.version_option(version="0.2.0", prog_name="research-cli")
 @click.pass_context
 def cli(ctx: click.Context, verbose: bool, quiet: bool) -> None:
     """Synthetic User Research Platform - Persona Management CLI."""
@@ -359,6 +364,157 @@ def init(ctx: click.Context, force: bool) -> None:
         click.echo("  1. View available personas: research-cli persona list")
         click.echo("  2. Show persona details: research-cli persona show <id>")
         click.echo("  3. Generate a prompt: research-cli persona prompt <id>")
+
+
+# ============================================================================
+# Research Commands (Phase 1)
+# ============================================================================
+
+
+@cli.group()
+def research() -> None:
+    """Execute research sessions with personas."""
+    pass
+
+
+@research.command("single")
+@click.option(
+    "--persona", "-p",
+    required=True,
+    help="Persona ID from the library",
+)
+@click.option(
+    "--question", "-q",
+    required=True,
+    help="Question to ask the persona",
+)
+@click.option(
+    "--dir",
+    "personas_dir",
+    type=click.Path(exists=True),
+    default=None,
+    help="Directory containing persona files",
+)
+@click.option(
+    "--timeout",
+    type=int,
+    default=30,
+    help="Timeout in seconds (default: 30)",
+)
+@click.option(
+    "--format", "-f",
+    "output_format",
+    type=click.Choice(["text", "json"]),
+    default="text",
+    help="Output format",
+)
+@click.option(
+    "--verbose", "-v",
+    is_flag=True,
+    help="Show detailed output including raw response",
+)
+@click.pass_context
+def research_single(
+    ctx: click.Context,
+    persona: str,
+    question: str,
+    personas_dir: Optional[str],
+    timeout: int,
+    output_format: str,
+    verbose: bool,
+) -> None:
+    """Execute a single-persona research session.
+
+    Ask a question to a persona and receive a structured response.
+
+    Example:
+        research-cli research single --persona tech-early-adopter --question "What do you think?"
+    """
+    from services.persona_library import PersonaLibrary
+    from services.session_runner import SessionRunner
+    from models.question import ResearchQuestion
+    from cli.formatters import (
+        format_session_header,
+        format_raw_response,
+        format_limitations_disclaimer,
+    )
+
+    # Validate question is not empty
+    if not question.strip():
+        console.print("[red]Error: Question cannot be empty.[/red]")
+        console.print("\nUsage: research-cli research single --persona <ID> --question <TEXT>")
+        sys.exit(1)
+
+    # Load persona
+    library = PersonaLibrary(
+        personas_dir=Path(personas_dir) if personas_dir else DEFAULT_PERSONAS_DIR
+    )
+
+    try:
+        persona_obj = library.get_by_id(persona)
+    except FileNotFoundError:
+        console.print(f"[red]Error: Persona '{persona}' not found.[/red]")
+        console.print("\n[bold]Available personas:[/bold]")
+        available = library.list_all()
+        for p in available:
+            console.print(f"  • {p.id}")
+        if available:
+            # Simple suggestion (first available)
+            console.print(f"\n[dim]Did you mean: {available[0].id}?[/dim]")
+        sys.exit(1)
+
+    # Create session
+    runner = SessionRunner()
+    research_question = ResearchQuestion(text=question)
+    session = runner.create_session(
+        persona_obj,
+        research_question,
+        metadata={"platform_version": "0.2.0", "timeout": timeout},
+    )
+
+    # Build the prompt for the subagent
+    prompt = runner.build_prompt(persona_obj, research_question)
+
+    # Output the task specification for Claude Code to execute
+    if output_format == "json":
+        # JSON output with task specification
+        output = {
+            "session": {
+                "id": session.id,
+                "status": session.status.value,
+                "started_at": session.started_at.isoformat(),
+            },
+            "persona": {
+                "id": persona_obj.id,
+                "name": persona_obj.name,
+            },
+            "question": {
+                "text": question,
+                "type": research_question.type.value,
+            },
+            "task_specification": {
+                "description": f"Research session with {persona_obj.name}",
+                "prompt": prompt,
+                "timeout": timeout,
+            },
+        }
+        click.echo(json.dumps(output, indent=2))
+    else:
+        # Rich text output
+        format_session_header(session, console)
+
+        console.print("\n[bold]Task Specification:[/bold]")
+        console.print(f"[dim]Session ID: {session.id}[/dim]")
+        console.print(f"[dim]Timeout: {timeout}s[/dim]")
+
+        if verbose or ctx.obj.get("verbose"):
+            console.print("\n[bold]Generated Prompt:[/bold]")
+            console.print(f"[dim]{prompt[:500]}...[/dim]" if len(prompt) > 500 else f"[dim]{prompt}[/dim]")
+
+        format_limitations_disclaimer(console)
+
+        console.print("\n[yellow]Note:[/yellow] This command generates the task specification.")
+        console.print("Execute the prompt with a Claude Code subagent to get the persona's response.")
 
 
 if __name__ == "__main__":
