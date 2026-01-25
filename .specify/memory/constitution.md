@@ -1,50 +1,109 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+  SYNC IMPACT REPORT
+  ==================
+  Version change: 1.0.0 → 1.1.0 (MINOR)
+
+  Modified Principles:
+  - I. Subagent-First Architecture: Language strengthened (is → MUST be)
+  - II. Persona Integrity: Language strengthened (are defined → MUST be defined)
+  - III. Honest Limitations: Language strengthened (state → MUST state)
+  - IV. Quality Through Calibration: Language strengthened (improves → MUST improve)
+  - V. Parallel Execution: Language strengthened (maximizes → MUST maximize)
+  - Response Quality Gates: Clarified warning/review actions
+
+  Added Sections:
+  - Governance > Amendment Procedure
+  - Governance > Versioning Policy
+  - Governance > Compliance Review
+
+  Removed Sections: None
+
+  Templates Requiring Updates:
+  - .specify/templates/plan-template.md: ✅ No update needed (generic constitution reference)
+  - .specify/templates/spec-template.md: ✅ No update needed
+  - .specify/templates/tasks-template.md: ✅ No update needed
+
+  Follow-up TODOs: None
+-->
+
+# Synthetic User Research Platform Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Subagent-First Architecture
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Every research capability MUST be executed through Claude Code subagents. The orchestration layer coordinates subagents but MUST delegate all persona simulation to independent Task tool invocations. Each persona MUST run in isolation with its own context to ensure behavioral independence.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Persona Integrity
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Personas MUST be defined declaratively in YAML with psychological frameworks (Big Five, Schwartz values). Persona definitions MUST be versioned and immutable within a research session. Responses MUST demonstrably align with defined traits - consistency is measurable and enforced.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. Honest Limitations
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Synthetic research has known biases (sycophancy, variance reduction, WEIRD bias). All outputs MUST explicitly state these limitations. The system MUST recommend real user validation for high-stakes decisions. Synthetic data MUST NOT be presented as equivalent to human research.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Quality Through Calibration
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Research quality MUST improve through systematic calibration against real user baselines. Quality metrics (consistency, sycophancy rate, variance) MUST be tracked for every session. Personas MUST be refined based on calibration data on a 60-90 day cycle.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Parallel Execution
+
+Panel research MUST maximize efficiency through parallel subagent execution. Independent persona responses MUST be gathered concurrently. Aggregation and analysis MUST occur after all responses complete.
+
+## Technical Standards
+
+### Persona Definition Requirements
+
+- All personas MUST include Big Five personality scores (1-10 scale)
+- At least two Schwartz value priorities MUST be specified
+- Technology adoption category is REQUIRED for product testing
+- Anti-sycophancy calibration instructions are REQUIRED
+
+### Response Quality Gates
+
+- Consistency score MUST exceed 90% to include in final analysis
+- Sessions with >30% sycophancy rate MUST trigger a warning notification to the operator and flag the session for manual review
+- Variance significantly below human baseline MUST pause session for calibration review before proceeding
+
+### Data Handling
+
+- Real user PII MUST NOT appear in persona definitions
+- Research sessions MUST be logged with full reproducibility
+- Export formats MUST clearly label data as synthetically generated
+
+## Development Workflow
+
+### Test-First for Quality
+
+Quality metrics tests MUST be written before feature implementation. Persona consistency validation MUST be automated. Integration tests MUST verify subagent coordination.
+
+### Progressive Enhancement
+
+Each phase MUST build on a stable foundation. MVP MUST validate core approach before expanding. New features MUST include quality metric coverage.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution guides all development decisions for the Synthetic User Research Platform.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### Amendment Procedure
+
+1. **Proposal**: Any contributor MAY propose an amendment by documenting the rationale and impact
+2. **Review**: Amendments MUST be reviewed for impact on existing capabilities
+3. **Approval**: Changes to Core Principles require explicit project lead approval
+4. **Documentation**: All amendments MUST update the version number and Last Amended date
+
+### Versioning Policy
+
+This constitution follows semantic versioning (MAJOR.MINOR.PATCH):
+
+- **MAJOR**: Backward-incompatible changes - removal or fundamental redefinition of principles
+- **MINOR**: Backward-compatible additions - new principles, sections, or materially expanded guidance
+- **PATCH**: Backward-compatible fixes - clarifications, wording improvements, typo corrections
+
+### Compliance Review
+
+- Constitution compliance SHOULD be verified at the start of each feature implementation (via plan.md Constitution Check)
+- Violations MUST be documented in the plan's Complexity Tracking table with justification
+- Quarterly review of constitution effectiveness is RECOMMENDED
+
+**Version**: 1.1.0 | **Ratified**: 2026-01-24 | **Last Amended**: 2026-01-24

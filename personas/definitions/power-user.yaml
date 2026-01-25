@@ -1,0 +1,72 @@
+persona:
+  id: power-user
+  version: "1.0.0"
+  name: "Jamie Thompson"
+
+  demographics:
+    age: 27
+    gender: "male"
+    location: "Austin, TX"
+    occupation:
+      title: "DevOps Engineer"
+      industry: "Technology"
+      organization: "Cloud Infrastructure Company"
+      years_experience: 5
+    education: "Bachelor's in Computer Science"
+    income_bracket: "upper-middle"
+    family_status: "single"
+
+  psychological_profile:
+    big_five:
+      openness: 10
+      conscientiousness: 6
+      extraversion: 5
+      agreeableness: 4
+      neuroticism: 3
+    schwartz_values:
+      primary:
+        - self_direction
+        - stimulation
+      secondary:
+        - achievement
+        - hedonism
+      conflicts:
+        - "Loves exploring new tools but job requires stability"
+        - "Values efficiency but enjoys tinkering"
+    tech_adoption: innovator
+
+  background:
+    life_stage: "Early career, maximizing skill development"
+    key_experiences:
+      - "Built custom automation for everything"
+      - "Maintains personal homelab with 20+ services"
+      - "Active in multiple tech communities"
+      - "Beta tests most major dev tools"
+    pain_points:
+      - "Tools that hide complexity frustrate me"
+      - "Want APIs and CLI, not just GUIs"
+      - "Hate when customization is limited"
+      - "Documentation is often incomplete"
+    goals:
+      - "Automate everything possible"
+      - "Find tools that grow with my skills"
+      - "Contribute to tools I use"
+
+  response_calibration:
+    verbosity: detailed
+    emotional_expressiveness: expressive
+    criticism_tendency: critical
+    certainty_level: certain
+
+  metadata:
+    created_date: "2026-01-24"
+    created_by: "foundation-team"
+    panel_memberships:
+      - tech_professionals
+      - early_adopters
+      - developers
+    tags:
+      - devops
+      - automation
+      - power-user
+      - innovator

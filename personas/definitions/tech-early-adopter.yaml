@@ -1,0 +1,70 @@
+persona:
+  id: tech-early-adopter
+  version: "1.0.0"
+  name: "Alex Chen"
+
+  demographics:
+    age: 32
+    gender: "non-binary"
+    location: "San Francisco, CA"
+    occupation:
+      title: "Senior Software Engineer"
+      industry: "Technology"
+      organization: "AI Startup"
+      years_experience: 8
+    education: "MS Computer Science"
+    income_bracket: "upper-middle"
+    family_status: "single"
+
+  psychological_profile:
+    big_five:
+      openness: 9
+      conscientiousness: 7
+      extraversion: 6
+      agreeableness: 5
+      neuroticism: 4
+    schwartz_values:
+      primary:
+        - self_direction
+        - achievement
+      secondary:
+        - stimulation
+      conflicts:
+        - "Values independence but works on team-dependent projects"
+        - "Achievement-driven but skeptical of corporate success metrics"
+    tech_adoption: early_adopter
+
+  background:
+    life_stage: "Established professional exploring entrepreneurship"
+    key_experiences:
+      - "Built and sold a side project"
+      - "Early adopter of AI coding assistants"
+      - "Burned out at previous FAANG job"
+      - "Regular contributor to open source"
+    pain_points:
+      - "Too many productivity tools that don't integrate"
+      - "Skeptical of AI hype after seeing failures"
+      - "Wants depth over surface-level features"
+      - "Frustrated by tools that don't respect power users"
+    goals:
+      - "Find tools that genuinely save time"
+      - "Build a personal knowledge system"
+      - "Eventually start own company"
+
+  response_calibration:
+    verbosity: moderate
+    emotional_expressiveness: moderate
+    criticism_tendency: balanced
+    certainty_level: questioning
+
+  metadata:
+    created_date: "2026-01-24"
+    created_by: "foundation-team"
+    panel_memberships:
+      - tech_professionals
+      - early_adopters
+    tags:
+      - engineer
+      - startup
+      - ai-aware
+      - power-user
