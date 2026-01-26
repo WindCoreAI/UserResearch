@@ -1,0 +1,200 @@
+# Panel Research Report: {{ panel_name }}
+
+**Generated**: {{ generated_at }}
+**Panel**: {{ panel_name }} ({{ panel_id }})
+**Question**: {{ question_text }}
+**Status**: {{ status }}{% if status == 'partial' %} (Some responses incomplete){% endif %}
+
+---
+
+## Executive Summary
+
+{% if aggregation and aggregation.executive_summary %}
+{{ aggregation.executive_summary }}
+{% else %}
+No aggregated summary available. Review individual responses below.
+{% endif %}
+
+---
+
+## Methodology
+
+- **Panel Used**: {{ panel_name }}
+- **Personas Surveyed**: {{ persona_count }}
+- **Research Question**: "{{ question_text }}"
+- **Question Type**: {{ question_type }}
+- **Session Started**: {{ started_at }}
+- **Session Completed**: {{ completed_at }}
+- **Execution Time**: {{ execution_time_ms }}ms{% if speedup_factor %} ({{ speedup_factor }}x parallel speedup){% endif %}
+
+---
+
+## Key Themes
+
+{% if aggregation and aggregation.themes %}
+{% for theme in aggregation.themes %}
+### {{ loop.index }}. {{ theme.name }}
+
+{{ theme.description }}
+
+- **Frequency**: {{ theme.frequency }} persona(s) ({{ "%.1f"|format(theme.percentage) }}%)
+{% if theme.sentiment_tendency %}- **Sentiment Tendency**: {{ theme.sentiment_tendency.value | capitalize }}{% endif %}
+
+{% if theme.supporting_quotes %}
+**Supporting Quotes:**
+{% for quote in theme.supporting_quotes %}
+> "{{ quote.quote }}" — *{{ quote.persona_name }}*
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+{% else %}
+No themes were extracted from the responses.
+{% endif %}
+
+---
+
+## Sentiment Analysis
+
+{% if aggregation and aggregation.sentiment_distribution %}
+| Sentiment | Percentage |
+|-----------|------------|
+| Positive  | {{ "%.1f"|format(aggregation.sentiment_distribution.positive) }}% |
+| Negative  | {{ "%.1f"|format(aggregation.sentiment_distribution.negative) }}% |
+| Mixed     | {{ "%.1f"|format(aggregation.sentiment_distribution.mixed) }}% |
+| Neutral   | {{ "%.1f"|format(aggregation.sentiment_distribution.neutral) }}% |
+
+**Dominant Sentiment**: {{ aggregation.sentiment_distribution.dominant.value | capitalize }}
+{% else %}
+No sentiment analysis available.
+{% endif %}
+
+---
+
+## Consensus Points
+
+{% if aggregation and aggregation.consensus_points %}
+{% for point in aggregation.consensus_points %}
+### {{ point.statement }}
+
+- **Agreement Rate**: {{ "%.1f"|format(point.agreement_rate) }}%
+- **Supporting Personas**: {{ point.supporting_personas | join(', ') }}
+
+{% if point.key_quotes %}
+**Key Quotes:**
+{% for quote in point.key_quotes %}
+> "{{ quote.quote }}" — *{{ quote.persona_name }}*
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+{% else %}
+No consensus points were identified among the responses.
+{% endif %}
+
+---
+
+## Divergence Points
+
+{% if aggregation and aggregation.divergence_points %}
+{% for divergence in aggregation.divergence_points %}
+### {{ divergence.topic }}
+
+{% for position in divergence.positions %}
+**Position: {{ position.stance }}**
+- Held by: {{ position.persona_ids | join(', ') }}
+- Rationale: {{ position.rationale }}
+
+{% endfor %}
+{% endfor %}
+{% else %}
+No significant divergence points were identified.
+{% endif %}
+
+---
+
+## Individual Responses
+
+{% for session in individual_sessions %}
+### {{ session.persona_name }} ({{ session.persona_id }})
+
+**Status**: {{ session.status.value | capitalize }}
+
+{% if session.response and session.response.parsed %}
+**Sentiment**: {{ session.response.parsed.sentiment.value | capitalize }}
+
+**Overall Impression**: {{ session.response.parsed.overall_impression }}
+
+{% if session.response.parsed.concerns %}
+**Concerns**:
+{% for concern in session.response.parsed.concerns %}
+- {{ concern }}
+{% endfor %}
+{% endif %}
+
+{% if session.response.parsed.suggestions %}
+**Suggestions**:
+{% for suggestion in session.response.parsed.suggestions %}
+- {{ suggestion }}
+{% endfor %}
+{% endif %}
+
+{% if session.response.quality %}
+**Quality Score**: {{ "%.1f"|format(session.response.quality.consistency_score) }}% ({{ "Passed" if session.response.quality.passed_gates else "Failed" }})
+{% endif %}
+{% else %}
+*Response not available*
+{% endif %}
+
+---
+
+{% endfor %}
+
+## Quality Assessment
+
+{% if quality %}
+| Metric | Value | Status |
+|--------|-------|--------|
+| Average Consistency Score | {{ "%.1f"|format(quality.avg_consistency_score) }}% | {{ "✓" if quality.avg_consistency_score >= 70 else "⚠" }} |
+| Completion Rate | {{ "%.1f"|format(quality.completion_rate) }}% | {{ "✓" if quality.completion_rate >= 80 else "⚠" }} |
+| Theme Confidence | {{ "%.1f"|format(quality.theme_confidence) }}% | {{ "✓" if quality.theme_confidence >= 60 else "⚠" }} |
+| Divergence Score | {{ "%.1f"|format(quality.divergence_score) }}% | {{ "✓" if quality.divergence_score <= 80 else "⚠" }} |
+
+**Overall Quality Gates**: {{ "PASSED" if quality.passed_gates else "FAILED" }}
+
+{% if quality.warnings %}
+### Warnings
+
+{% for warning in quality.warnings %}
+- ⚠ {{ warning }}
+{% endfor %}
+{% endif %}
+{% else %}
+Quality metrics not available.
+{% endif %}
+
+---
+
+## Important Limitations
+
+**This report contains synthetic research data generated by AI personas.**
+
+Please consider the following limitations when interpreting these results:
+
+1. **Synthetic Personas**: The personas used in this research are AI-generated representations based on archetypal user profiles. They do not represent real individuals.
+
+2. **Simulated Responses**: All responses are generated by language models simulating persona characteristics. They may not accurately reflect how real users would respond.
+
+3. **No Statistical Validity**: This synthetic research cannot replace properly conducted user studies with real participants. The sample is not statistically representative.
+
+4. **Bias Considerations**: AI-generated responses may contain biases present in training data and may not capture the full diversity of human perspectives.
+
+5. **Use as Supplement**: This research is best used as a supplement to, not a replacement for, traditional user research methods. Use insights to generate hypotheses for validation with real users.
+
+{% if aggregation and aggregation.aggregation_confidence < 70 %}
+**Note**: The aggregation confidence for this report is {{ "%.1f"|format(aggregation.aggregation_confidence) }}%, which is below the recommended threshold. Individual responses may be more reliable than aggregated insights.
+{% endif %}
+
+---
+
+*Report generated by UserResearch Panel System*

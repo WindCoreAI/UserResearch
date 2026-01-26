@@ -5,5 +5,13 @@ __all__ = [
     "PersonaLoader",
     "PersonaLibrary",
     "PromptBuilder",
-    # Phase 1 - stubs, will be populated as implementations are added
+    # Phase 1
+    "SessionRunner",
+    "ResponseParser",
+    "QualityMetricsCalculator",
+    # Phase 2 - Panel support
+    "PanelLoader",
+    "PanelExecutor",
+    "ResponseAggregator",
+    "ReportGenerator",
 ]

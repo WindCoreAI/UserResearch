@@ -517,5 +517,13 @@ def research_single(
         console.print("Execute the prompt with a Claude Code subagent to get the persona's response.")
 
 
+# ============================================================================
+# Panel Commands (Phase 2) - Register with research group
+# ============================================================================
+
+from cli.panel_commands import panel_group
+research.add_command(panel_group)
+
+
 if __name__ == "__main__":
     cli()

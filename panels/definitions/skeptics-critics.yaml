@@ -1,0 +1,10 @@
+id: skeptics-critics
+name: Skeptics and Critics Panel
+description: Privacy-conscious and skeptical users who question new technology
+purpose: Identifying potential concerns, risks, and resistance points
+persona_ids:
+  - skeptical-late-adopter
+  - privacy-conscious-user
+  - busy-professional
+is_custom: false
+created_at: "2026-01-25T00:00:00Z"

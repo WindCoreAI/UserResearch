@@ -1,0 +1,12 @@
+id: tech-adopters
+name: Technology Adopters Panel
+description: Full spectrum of technology adoption attitudes
+purpose: Product feature testing with diverse tech comfort levels
+persona_ids:
+  - tech-early-adopter
+  - power-user
+  - busy-professional
+  - privacy-conscious-user
+  - skeptical-late-adopter
+is_custom: false
+created_at: "2026-01-25T00:00:00Z"
