@@ -1,0 +1,10 @@
+id: power-users
+name: Power Users Panel
+description: High-engagement expert users who push product limits
+purpose: Advanced feature validation and edge case discovery
+persona_ids:
+  - power-user
+  - tech-early-adopter
+  - busy-professional
+is_custom: false
+created_at: "2026-01-25T00:00:00Z"

@@ -1,5 +1,16 @@
 """Pydantic models for persona schema validation and research sessions."""
 
+from models.aggregation import (
+    AggregatedResults,
+    ConsensusPoint,
+    DivergencePoint,
+    PanelQualityMetrics,
+    Position,
+    QuoteReference,
+    SentimentDistribution,
+    Theme,
+)
+from models.panel import PanelSession, PanelSessionStatus, ResearchPanel
 from models.question import QuestionType, ResearchQuestion
 from models.session import (
     ParsedResponse,
@@ -11,6 +22,7 @@ from models.session import (
 )
 
 __all__ = [
+    # Session models
     "ParsedResponse",
     "QualityMetrics",
     "QuestionType",
@@ -19,4 +31,17 @@ __all__ = [
     "SessionResponse",
     "SessionStatus",
     "Sentiment",
+    # Panel models
+    "PanelSession",
+    "PanelSessionStatus",
+    "ResearchPanel",
+    # Aggregation models
+    "AggregatedResults",
+    "ConsensusPoint",
+    "DivergencePoint",
+    "PanelQualityMetrics",
+    "Position",
+    "QuoteReference",
+    "SentimentDistribution",
+    "Theme",
 ]

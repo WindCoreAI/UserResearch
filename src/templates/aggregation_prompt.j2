@@ -1,0 +1,121 @@
+You are a research analyst synthesizing feedback from {{ persona_count }} synthetic user personas.
+
+## Research Question
+"{{ question }}"
+
+## Panel Information
+- Panel: {{ panel_name }}
+- Personas: {{ persona_count }}
+
+## Individual Responses
+
+{% for response in responses %}
+### {{ response.persona_name }} ({{ response.persona_id }})
+**Sentiment**: {{ response.sentiment }}
+**Overall Impression**: {{ response.overall_impression }}
+{% if response.concerns %}
+**Concerns**:
+{% for concern in response.concerns %}
+- {{ concern }}
+{% endfor %}
+{% endif %}
+{% if response.suggestions %}
+**Suggestions**:
+{% for suggestion in response.suggestions %}
+- {{ suggestion }}
+{% endfor %}
+{% endif %}
+{% if response.key_quotes %}
+**Key Quotes**:
+{% for quote in response.key_quotes %}
+- "{{ quote }}"
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+
+## Your Task
+
+Analyze these {{ persona_count }} responses and provide a structured synthesis:
+
+1. **EXECUTIVE_SUMMARY**: Write a 2-3 sentence synthesis capturing the key findings across all personas. Be concise and actionable.
+
+2. **THEMES**: Identify the top 3-5 recurring themes across responses. For each theme:
+   - Name (3-7 words)
+   - Description (1-2 sentences)
+   - Frequency (how many personas mentioned it)
+   - Supporting quotes (1-2 direct quotes from responses)
+   - Sentiment tendency (POSITIVE, NEGATIVE, MIXED, or NEUTRAL)
+
+3. **SENTIMENT_DISTRIBUTION**: Calculate the percentage breakdown:
+   - Positive: X%
+   - Negative: X%
+   - Mixed: X%
+   - Neutral: X%
+   - Dominant sentiment
+
+4. **CONSENSUS_POINTS**: Identify issues where >60% of personas agree:
+   - Statement of agreement
+   - Agreement rate (percentage)
+   - Which personas agree
+   - Key supporting quotes
+
+5. **DIVERGENCE_POINTS**: Identify significant disagreements:
+   - Topic of disagreement
+   - Different positions (at least 2)
+   - For each position: stance, which personas hold it, rationale
+
+## Output Format
+
+Respond with a JSON object matching this structure:
+```json
+{
+  "executive_summary": "...",
+  "themes": [
+    {
+      "name": "...",
+      "description": "...",
+      "frequency": N,
+      "percentage": X.X,
+      "supporting_quotes": [
+        {"persona_id": "...", "persona_name": "...", "quote": "..."}
+      ],
+      "sentiment_tendency": "POSITIVE|NEGATIVE|MIXED|NEUTRAL"
+    }
+  ],
+  "sentiment_distribution": {
+    "positive": X.X,
+    "negative": X.X,
+    "mixed": X.X,
+    "neutral": X.X,
+    "dominant": "POSITIVE|NEGATIVE|MIXED|NEUTRAL"
+  },
+  "consensus_points": [
+    {
+      "statement": "...",
+      "agreement_rate": X.X,
+      "supporting_personas": ["persona-id-1", "persona-id-2"],
+      "key_quotes": []
+    }
+  ],
+  "divergence_points": [
+    {
+      "topic": "...",
+      "positions": [
+        {
+          "stance": "...",
+          "persona_ids": ["..."],
+          "rationale": "..."
+        }
+      ]
+    }
+  ],
+  "aggregation_confidence": X.X
+}
+```
+
+Important:
+- Be objective and data-driven
+- Quote directly from the responses when possible
+- If no clear consensus or divergence exists, return empty arrays
+- Calculate aggregation_confidence based on how clear the patterns are (0-100)
