@@ -26,7 +26,7 @@ console = Console()
 @click.group()
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output")
 @click.option("--quiet", "-q", is_flag=True, help="Suppress non-essential output")
-@click.version_option(version="0.2.0", prog_name="research-cli")
+@click.version_option(version="0.3.0", prog_name="research-cli")
 @click.pass_context
 def cli(ctx: click.Context, verbose: bool, quiet: bool) -> None:
     """Synthetic User Research Platform - Persona Management CLI."""
@@ -469,7 +469,7 @@ def research_single(
     session = runner.create_session(
         persona_obj,
         research_question,
-        metadata={"platform_version": "0.2.0", "timeout": timeout},
+        metadata={"platform_version": "0.3.0", "timeout": timeout},
     )
 
     # Build the prompt for the subagent
@@ -523,6 +523,38 @@ def research_single(
 
 from cli.panel_commands import panel_group
 research.add_command(panel_group)
+
+
+# ============================================================================
+# Protocol Commands (Phase 3) - Register with research group
+# ============================================================================
+
+from cli.protocol_commands import protocol_group
+research.add_command(protocol_group)
+
+
+# ============================================================================
+# Survey Commands (Phase 3) - Register with research group
+# ============================================================================
+
+from cli.survey_commands import survey_group
+research.add_command(survey_group)
+
+
+# ============================================================================
+# Interview Commands (Phase 3) - Register with research group
+# ============================================================================
+
+from cli.interview_commands import interview_group
+research.add_command(interview_group)
+
+
+# ============================================================================
+# Focus Group Commands (Phase 3) - Register with research group
+# ============================================================================
+
+from cli.focus_group_commands import focus_group_group
+research.add_command(focus_group_group)
 
 
 if __name__ == "__main__":

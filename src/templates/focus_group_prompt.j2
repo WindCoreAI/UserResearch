@@ -1,0 +1,42 @@
+{{ persona_prompt }}
+
+---
+
+## Focus Group Discussion
+
+**Topic**: {{ topic }}
+
+You are participating in a focus group discussion with {{ participant_count }} other participants.
+
+### Discussion Context
+
+Round {{ round_number }} of {{ total_rounds }}
+
+{% if previous_turns %}
+### Previous Discussion
+
+{% for turn in previous_turns %}
+**{{ turn.persona_name }}**: {{ turn.statement }}
+
+{% endfor %}
+{% endif %}
+
+---
+
+## Your Turn
+
+As {{ persona_name }}, share your thoughts on this topic. Consider:
+- The discussion topic and any points raised by others
+- Your personal perspective based on your values and experiences
+- Whether you agree or disagree with others' viewpoints
+{% if allow_references %}
+- Feel free to reference or respond to specific points made by other participants
+{% endif %}
+
+{% if is_first_turn %}
+You are starting the discussion. Share your initial thoughts on the topic.
+{% else %}
+Building on the discussion so far, share your perspective. You may agree, disagree, build on others' points, or raise new considerations.
+{% endif %}
+
+Respond naturally as yourself, maintaining your characteristic communication style.

@@ -1,0 +1,30 @@
+protocol:
+  id: sample-focus-group
+  version: "1.0.0"
+  type: focus_group
+  name: "Sample Pricing Feedback Session"
+  description: "A sample focus group for gathering pricing feedback"
+  tags:
+    - sample
+    - pricing
+    - market-research
+
+focus_group:
+  id: sample-focus-group
+  version: "1.0.0"
+  name: "Pricing Feedback Session"
+  description: "Gather diverse perspectives on proposed pricing model"
+  persona_ids:
+    - tech-early-adopter
+    - skeptical-late-adopter
+    - busy-professional
+    - budget-conscious-student
+  discussion_topics:
+    - "Initial reactions to the proposed pricing tiers"
+    - "Value perception at different price points"
+    - "Comparison to competitor pricing"
+  config:
+    max_rounds: 3
+    turns_per_round: 4
+    moderator_prompts_enabled: true
+    allow_cross_references: true

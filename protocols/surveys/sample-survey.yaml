@@ -1,0 +1,38 @@
+protocol:
+  id: sample-survey
+  version: "1.0.0"
+  type: survey
+  name: "Sample Feature Survey"
+  description: "A sample survey for testing feature reactions"
+  tags:
+    - sample
+    - feature-testing
+
+survey:
+  id: sample-survey
+  version: "1.0.0"
+  name: "Sample Feature Survey"
+  description: "Evaluate user reactions to a proposed feature"
+  questions:
+    - id: q1-likelihood
+      text: "How likely are you to use this feature?"
+      type: rating
+      scale_min: 1
+      scale_max: 10
+      scale_labels:
+        1: "Not at all likely"
+        5: "Neutral"
+        10: "Extremely likely"
+
+    - id: q2-reaction
+      text: "What best describes your initial reaction to this feature?"
+      type: multiple_choice
+      options:
+        - "Excited - I want this now!"
+        - "Interested - I'd like to learn more"
+        - "Neutral - I could take it or leave it"
+        - "Skeptical - I have concerns"
+
+    - id: q3-improvements
+      text: "What improvements or changes would make this feature more valuable to you?"
+      type: open_ended

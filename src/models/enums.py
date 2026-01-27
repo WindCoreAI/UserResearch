@@ -71,3 +71,43 @@ class CertaintyLevel(str, Enum):
     CERTAIN = "certain"  # Strong, definitive opinions
     QUESTIONING = "questioning"  # Exploratory, considers alternatives
     UNCERTAIN = "uncertain"  # Hesitant, acknowledges limitations
+
+
+# Research Methods Enums (Phase 3)
+
+
+class ResearchMethodType(str, Enum):
+    """Type of research method being conducted."""
+
+    SURVEY = "survey"
+    INTERVIEW = "interview"
+    FOCUS_GROUP = "focus_group"
+    SINGLE = "single"  # Existing single-question method
+    PANEL = "panel"  # Existing panel method
+
+
+class SurveyQuestionType(str, Enum):
+    """Types of survey questions."""
+
+    RATING = "rating"
+    MULTIPLE_CHOICE = "multiple_choice"
+    OPEN_ENDED = "open_ended"
+
+
+class InterviewProbeType(str, Enum):
+    """Types of interview probing strategies."""
+
+    ELABORATION = "elaboration"  # "Can you tell me more about that?"
+    CLARIFICATION = "clarification"  # "What do you mean by...?"
+    EXAMPLE = "example"  # "Can you give me an example?"
+    FEELING = "feeling"  # "How did that make you feel?"
+
+
+class DiscussionInteractionType(str, Enum):
+    """Types of interactions in focus group discussions."""
+
+    AGREEMENT = "agreement"
+    DISAGREEMENT = "disagreement"
+    BUILDING_ON = "building_on"
+    QUESTION = "question"
+    NEW_POINT = "new_point"
