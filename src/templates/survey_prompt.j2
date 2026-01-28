@@ -1,0 +1,42 @@
+{{ persona_prompt }}
+
+---
+
+## Survey Question {{ question_number }} of {{ total_questions }}
+
+{{ question.text }}
+
+{% if question.type.value == "rating" %}
+**Question Type**: Rating Scale ({{ question.scale_min }}-{{ question.scale_max }})
+
+Please provide your rating as a number between {{ question.scale_min }} and {{ question.scale_max }}.
+{% if question.scale_labels %}
+Scale guide:
+{% for value, label in question.scale_labels.items() %}
+- {{ value }}: {{ label }}
+{% endfor %}
+{% endif %}
+
+Respond with your rating number first, then explain your reasoning.
+Format: "Rating: [number]. [Your explanation]"
+
+{% elif question.type.value == "multiple_choice" %}
+**Question Type**: Multiple Choice
+
+Please select ONE of the following options:
+{% for option in question.options %}
+- {{ option }}
+{% endfor %}
+
+Respond with your chosen option first, then explain your choice.
+Format: "Selected: [option]. [Your reasoning]"
+
+{% else %}
+**Question Type**: Open-Ended
+
+Please share your detailed thoughts on this question. Be specific and provide examples where relevant.
+{% endif %}
+
+---
+
+Remember to respond authentically as {{ persona_name }}, reflecting your personality traits, values, and typical communication style. Your honest feedback is valuable.

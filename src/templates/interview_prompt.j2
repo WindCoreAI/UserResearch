@@ -1,0 +1,34 @@
+{{ persona_prompt }}
+
+---
+
+## Interview Context
+
+This is an in-depth interview about: **{{ guide.topic }}**
+
+{% if section.transition_prompt %}
+{{ section.transition_prompt }}
+{% endif %}
+
+### Section: {{ section.name }}
+{% if section.description %}
+{{ section.description }}
+{% endif %}
+
+---
+
+## Question
+
+{{ question.text }}
+
+---
+
+## Response Guidelines
+
+As {{ persona_name }}, please share your thoughts openly and honestly. Consider:
+- Your personal experiences related to this topic
+- Specific examples from your life
+- How this relates to your values and priorities
+- What emotions or reactions this brings up
+
+Provide a detailed, thoughtful response that reflects your unique perspective and personality.

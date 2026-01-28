@@ -11,7 +11,7 @@ This roadmap outlines the phased development of the Synthetic User Research Plat
 | Phase 0: Foundation | ✅ Complete | 2026-01-25 |
 | Phase 1: Single Persona MVP | ✅ Complete | 2026-01-25 |
 | Phase 2: Multi-Persona Panels | ✅ Complete | 2026-01-26 |
-| Phase 3: Research Methods | 🔲 Not Started | - |
+| Phase 3: Research Methods | ✅ Complete | 2026-01-27 |
 | Phase 4: Quality & Calibration | 🔲 Not Started | - |
 | Phase 5: Advanced Features | 🔲 Not Started | - |
 
@@ -299,22 +299,146 @@ research-cli research panel create --name my-panel --personas tech-early-adopter
 research-cli research panel delete my-panel --force
 ```
 
-## Phase 3: Research Methods
+## Phase 3: Research Methods ✅ COMPLETE
+
+**Completed**: 2026-01-27 | **Branch**: `004-research-methods`
 
 ### Objectives
-- Support different research methodologies
-- Implement survey, interview, and focus group modes
-- Add structured research protocols
+- [x] Support different research methodologies
+- [x] Implement survey, interview, and focus group modes
+- [x] Add structured research protocols
 
 ### Deliverables
 
-| Deliverable | Description |
-|-------------|-------------|
-| SurveyEngine | Structured survey with rating scales |
-| InterviewEngine | Deep-dive conversational interviews |
-| FocusGroupEngine | Multi-persona discussions |
-| ProtocolTemplates | Reusable research protocols |
-| Method CLI | `survey`, `interview`, `focus-group` commands |
+| Deliverable | Description | Status |
+|-------------|-------------|--------|
+| ProtocolLoader | Load, save, list, delete research protocols with type discrimination | ✅ |
+| SurveyEngine | Structured survey with rating scales, multiple choice, open-ended | ✅ |
+| InterviewEngine | Deep-dive conversational interviews with probing logic | ✅ |
+| FocusGroupEngine | Multi-persona discussions with turn-taking and interaction analysis | ✅ |
+| Protocol CLI | `research protocol list/show/delete` commands | ✅ |
+| Survey CLI | `research survey run/create/report` commands | ✅ |
+| Interview CLI | `research interview run/create/report` commands | ✅ |
+| Focus Group CLI | `research focus-group run/create/report` commands | ✅ |
+| Jinja2 Templates | Prompts and reports for all research methods | ✅ |
+| Sample Protocols | Ready-to-use survey, interview, focus group protocols | ✅ |
+
+### Implementation Summary
+
+**New Components (106 tasks completed):**
+- `src/models/enums.py` - Added ResearchMethodType, SurveyQuestionType, InterviewProbeType, DiscussionInteractionType
+- `src/models/protocol.py` - ResearchProtocol base with SurveyProtocol, InterviewProtocol, FocusGroupProtocol variants
+- `src/models/survey.py` - Survey, SurveyQuestion, SurveyResponse, SurveyResult, RatingStatistics, MultipleChoiceStatistics, SurveyAggregation
+- `src/models/interview.py` - InterviewGuide, InterviewSection, InterviewQuestion, InterviewProbe, InterviewExchange, SectionTranscript, InterviewTranscript
+- `src/models/focus_group.py` - FocusGroup, FocusGroupConfig, DiscussionTurn, DiscussionReference, DiscussionLog, ConsensusPoint, DivergencePoint, OpinionShift
+- `src/services/protocol_loader.py` - ProtocolLoader with load_by_id(), save(), delete(), list_protocols()
+- `src/services/survey_engine.py` - SurveyEngine with execute_survey(), rating/MC parsing, validation
+- `src/services/interview_engine.py` - InterviewEngine with section-based execution, probing logic, follow-up generation
+- `src/services/focus_group_engine.py` - FocusGroupEngine with turn-based discussion, reference detection, interaction classification
+- `src/cli/protocol_commands.py` - Protocol management commands
+- `src/cli/survey_commands.py` - Survey execution and reporting commands
+- `src/cli/interview_commands.py` - Interview execution and reporting commands
+- `src/cli/focus_group_commands.py` - Focus group execution and reporting commands
+- `src/templates/survey_prompt.j2`, `survey_report.j2` - Survey templates
+- `src/templates/interview_prompt.j2`, `interview_report.j2` - Interview templates
+- `src/templates/focus_group_prompt.j2`, `focus_group_report.j2` - Focus group templates
+
+**Features Implemented:**
+- Protocol abstraction with type discrimination for surveys, interviews, focus groups
+- Survey question types: RATING (with scale bounds), MULTIPLE_CHOICE (with options), OPEN_ENDED
+- Rating response parsing with clamping and validation warnings
+- Multiple choice parsing with case-insensitive and partial matching
+- Interview sections with transition prompts and description
+- Interview probing with ELABORATION, CLARIFICATION, EXAMPLE, FEELING probe types
+- Follow-up question generation based on response length
+- Focus group turn-taking with configurable rounds and turns per round
+- Discussion reference detection and interaction type classification
+- Consensus and divergence point identification
+- Opinion shift tracking across discussion rounds
+- Markdown report generation for all research methods
+- JSON export for all session data
+- YAML-based protocol storage in `protocols/` directory
+- CLI version updated to 0.3.0
+
+**Test Coverage:**
+- 310 tests passing (unit, integration, contract)
+- Survey model tests (22 tests)
+- Survey engine tests (18 tests)
+- Protocol model tests
+- Protocol loader tests
+- Protocol schema contract tests
+
+### Implementation Architecture
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                      Protocol Management                          │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  │
+│  │ SurveyProtocol  │  │InterviewProtocol│  │FocusGroupProtocol│  │
+│  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘  │
+│           │                    │                    │            │
+│           └────────────────────┼────────────────────┘            │
+│                                │                                  │
+│                    ┌───────────▼───────────┐                     │
+│                    │    ProtocolLoader     │                     │
+│                    │  (type discrimination)│                     │
+│                    └───────────────────────┘                     │
+└──────────────────────────────────────────────────────────────────┘
+                                 │
+        ┌────────────────────────┼────────────────────────┐
+        ▼                        ▼                        ▼
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│ SurveyEngine  │      │InterviewEngine│      │FocusGroupEngine│
+│               │      │               │      │               │
+│ • Question    │      │ • Section     │      │ • Turn-based  │
+│   prompts     │      │   execution   │      │   discussion  │
+│ • Rating      │      │ • Probing     │      │ • Reference   │
+│   parsing     │      │   logic       │      │   detection   │
+│ • MC parsing  │      │ • Follow-up   │      │ • Interaction │
+│ • Validation  │      │   generation  │      │   analysis    │
+└───────┬───────┘      └───────┬───────┘      └───────┬───────┘
+        │                      │                      │
+        ▼                      ▼                      ▼
+┌───────────────┐      ┌───────────────┐      ┌───────────────┐
+│ SurveyResult  │      │ Interview     │      │ DiscussionLog │
+│               │      │ Transcript    │      │               │
+│ • Responses   │      │ • Sections    │      │ • Turns       │
+│ • Aggregation │      │ • Exchanges   │      │ • Consensus   │
+│ • Statistics  │      │ • Key quotes  │      │ • Divergence  │
+└───────────────┘      └───────────────┘      └───────────────┘
+```
+
+### Sample Protocols Created
+
+| Protocol | Location | Description |
+|----------|----------|-------------|
+| `sample-survey` | `protocols/surveys/sample-survey.yaml` | Feature satisfaction survey with rating, MC, and open-ended questions |
+| `sample-interview` | `protocols/interviews/sample-interview.yaml` | User experience interview with background and experience sections |
+| `sample-focus-group` | `protocols/focus-groups/sample-focus-group.yaml` | Product feedback discussion with 3 rounds |
+
+### Usage
+
+```bash
+# Protocol Management
+research-cli research protocol list
+research-cli research protocol show sample-survey
+research-cli research protocol delete my-protocol --force
+
+# Survey Execution
+research-cli research survey run --protocol sample-survey --persona tech-early-adopter
+research-cli research survey create -f my-survey.yaml
+research-cli research survey report --session-id <id>
+
+# Interview Execution
+research-cli research interview run --protocol sample-interview --persona power-user
+research-cli research interview create -f my-interview.yaml
+research-cli research interview report --session-id <id>
+
+# Focus Group Execution
+research-cli research focus-group run --protocol sample-focus-group --personas tech-early-adopter,power-user,skeptical-late-adopter
+research-cli research focus-group create -f my-focus-group.yaml
+research-cli research focus-group report --session-id <id>
+```
 
 ### Research Method Specifications
 
@@ -491,8 +615,8 @@ A/B Research Session:
 | Phase 0 | Foundation complete | 5 personas, schema defined, CLI working | ✅ Complete |
 | Phase 1 | Single persona works | Consistent, quality responses, 138 tests | ✅ Complete |
 | Phase 2 | Panel research works | Parallel execution, aggregation, reports, 239 tests | ✅ Complete |
-| Phase 3 | Multiple methods | Survey, interview, focus group | 🔲 Next |
-| Phase 4 | Quality assured | Calibration pipeline running | 🔲 Planned |
+| Phase 3 | Multiple methods | Survey, interview, focus group, 310 tests | ✅ Complete |
+| Phase 4 | Quality assured | Calibration pipeline running | 🔲 Next |
 | Phase 5 | Production ready | Memory, integrations, scale | 🔲 Planned |
 
 ## Technical Dependencies
@@ -528,10 +652,11 @@ A/B Research Session:
 
 ---
 
-**Version**: 1.3.0 | **Created**: 2026-01-24 | **Updated**: 2026-01-26
+**Version**: 1.4.0 | **Created**: 2026-01-24 | **Updated**: 2026-01-27
 
 ### Changelog
 
+- **1.4.0** (2026-01-27): Phase 3 Research Methods completed - 106 tasks, 310 tests, SurveyEngine, InterviewEngine, FocusGroupEngine, ProtocolLoader, 3 sample protocols
 - **1.3.0** (2026-01-26): Phase 2 Multi-Persona Panels completed - 100 tasks, 239 tests, PanelExecutor, ResponseAggregator, ReportGenerator, 4 pre-built panels
 - **1.2.0** (2026-01-25): Phase 1 Single Persona MVP completed - 78 tasks, 138 tests, SessionRunner, ResponseParser, QualityMetrics
 - **1.1.0** (2026-01-25): Phase 0 Foundation completed - 78 tasks, 73 tests, 5 base personas

@@ -1,0 +1,75 @@
+protocol:
+  id: sample-interview
+  version: "1.0.0"
+  type: interview
+  name: "Sample Onboarding Interview"
+  description: "A sample interview guide for understanding onboarding experiences"
+  tags:
+    - sample
+    - onboarding
+    - user-experience
+
+guide:
+  id: sample-interview
+  version: "1.0.0"
+  name: "Sample Onboarding Interview"
+  topic: "User onboarding experience"
+  description: "Explore how users experience the onboarding flow"
+  min_response_length: 50
+  default_max_followups: 3
+  sections:
+    - id: background
+      name: "Background"
+      description: "Understand the user's context and prior experience"
+      questions:
+        - id: prior-experience
+          text: "Tell me about your experience with similar products or services."
+          allow_followups: true
+          max_followup_depth: 2
+          probes:
+            - type: elaboration
+              question_template: "Can you tell me more about what made those experiences memorable?"
+
+        - id: expectations
+          text: "What were your expectations when you first started using our product?"
+          allow_followups: true
+          max_followup_depth: 2
+
+    - id: first-impressions
+      name: "First Impressions"
+      description: "Explore initial reactions during onboarding"
+      transition_prompt: "Now let's talk about your actual onboarding experience..."
+      questions:
+        - id: initial-reaction
+          text: "Walk me through your first few minutes with the product. What stood out to you?"
+          allow_followups: true
+          max_followup_depth: 3
+          probes:
+            - type: example
+              trigger: "confused"
+              question_template: "Can you give me a specific example of what confused you?"
+            - type: feeling
+              question_template: "How did that make you feel?"
+
+        - id: challenges
+          text: "Were there any moments where you felt stuck or frustrated during onboarding?"
+          allow_followups: true
+          max_followup_depth: 2
+          probes:
+            - type: clarification
+              question_template: "What exactly happened at that point?"
+
+    - id: overall
+      name: "Overall Assessment"
+      description: "Gather overall thoughts and suggestions"
+      transition_prompt: "As we wrap up, I'd like to hear your overall thoughts..."
+      questions:
+        - id: best-part
+          text: "What was the best part of your onboarding experience?"
+          allow_followups: true
+          max_followup_depth: 2
+
+        - id: suggestions
+          text: "If you could change one thing about the onboarding, what would it be?"
+          allow_followups: true
+          max_followup_depth: 2
