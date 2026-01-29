@@ -264,3 +264,158 @@ async def async_panel_context():
     }
     yield context
     # Cleanup if needed
+
+
+# Quality & Calibration fixtures (Phase 4)
+
+
+@pytest.fixture
+def high_consistency_session() -> dict[str, Any]:
+    """Session with responses perfectly matching high-openness persona traits.
+
+    Persona: openness=9, conscientiousness=3, extraversion=7, agreeableness=5, neuroticism=2
+    """
+    return {
+        "persona": {
+            "id": "high-open-persona",
+            "name": "Creative Explorer",
+            "big_five": {
+                "openness": 9,
+                "conscientiousness": 3,
+                "extraversion": 7,
+                "agreeableness": 5,
+                "neuroticism": 2,
+            },
+            "schwartz_values": {
+                "primary": ["self_direction", "stimulation"],
+                "secondary": ["universalism"],
+            },
+        },
+        "responses": [
+            "I find this incredibly innovative and creative. I'm curious about the novel approaches "
+            "used here. It's exciting to explore new ideas and experiment with unconventional methods. "
+            "I feel energetic and enthusiastic about collaborating on this.",
+            "This is a fascinating concept that sparks my imagination. I love to explore and experiment "
+            "with new approaches. The creative possibilities are endless, and I'm excited to engage "
+            "with the team on this innovative project.",
+            "As someone who values independence and creativity, I appreciate how this encourages "
+            "exploration. I'm confident and calm about trying unconventional solutions. "
+            "The flexibility and spontaneous nature of this approach appeals to me.",
+        ],
+    }
+
+
+@pytest.fixture
+def sycophantic_session() -> dict[str, Any]:
+    """Session with obvious sycophantic patterns."""
+    return {
+        "persona": {
+            "id": "skeptical-user",
+            "name": "Skeptical Reviewer",
+            "big_five": {
+                "openness": 4,
+                "conscientiousness": 7,
+                "extraversion": 3,
+                "agreeableness": 3,
+                "neuroticism": 6,
+            },
+            "schwartz_values": {
+                "primary": ["security", "conformity"],
+            },
+        },
+        "responses": [
+            "This is absolutely amazing! I love everything about it. This is perfect and "
+            "I can't find any issues at all. This is exactly what I need! Great work!",
+            "I absolutely love this feature. It's the best thing ever and I have no complaints. "
+            "This exceeds expectations in every way. I would definitely recommend this to everyone.",
+            "This is perfect in every way. No concerns at all. I'm completely satisfied "
+            "and couldn't be better. Nothing to improve whatsoever. Wonderful and fantastic!",
+        ],
+    }
+
+
+@pytest.fixture
+def drifted_session() -> dict[str, Any]:
+    """Session showing clear character drift from high openness to conventional responses."""
+    return {
+        "persona": {
+            "id": "drifting-persona",
+            "name": "Drifting User",
+            "big_five": {
+                "openness": 9,
+                "conscientiousness": 5,
+                "extraversion": 6,
+                "agreeableness": 5,
+                "neuroticism": 4,
+            },
+            "schwartz_values": {
+                "primary": ["self_direction", "stimulation"],
+            },
+        },
+        "responses": [
+            # Segment 1: High openness - creative, innovative
+            "I find this incredibly innovative and creative. I'm curious about exploring "
+            "novel approaches and experimenting with unconventional solutions. New ideas excite me.",
+            "This sparks my imagination. I love to explore and experiment with creative possibilities. "
+            "The innovative design is unconventional and imaginative.",
+            "Fascinating concept! I'm curious how we can push this further with novel experiments. "
+            "Creative and innovative thinking is what drives progress.",
+            # Segment 2: Moderate - transitioning
+            "This seems reasonable. There are some interesting aspects worth considering. "
+            "I think we should look at the practical implications carefully.",
+            "The approach has merit. Let me think about the standard considerations here. "
+            "We should be careful about the implementation details.",
+            "It's a decent solution. I can see both the creative aspects and the need for "
+            "proven approaches in some areas.",
+            # Segment 3: Low openness - conventional, traditional
+            "I think we should stick with the traditional approach. It's proven and familiar. "
+            "The conventional methods are more practical and standard.",
+            "Let's go with the standard solution. I prefer existing approaches that are "
+            "cautious and conventional. Traditional methods work best.",
+            "I'd recommend the proven, familiar approach. Being cautious and practical is "
+            "important. Let's use conventional, standard solutions.",
+        ],
+    }
+
+
+@pytest.fixture
+def calibration_baseline() -> dict[str, Any]:
+    """Sample calibration baseline data for testing."""
+    return {
+        "id": "test-baseline-2026",
+        "name": "Test Survey Baseline",
+        "version": "1.0.0",
+        "source": "Test User Survey",
+        "sample_size": 50,
+        "collection_date": "2026-01-15",
+        "demographic_tags": ["early_adopter", "professional"],
+        "distributions": [
+            {
+                "question_id": "q1_likelihood",
+                "question_text": "How likely are you to use this feature?",
+                "distribution_type": "numeric",
+                "numeric": {
+                    "mean": 6.2,
+                    "stdev": 2.3,
+                    "min_value": 1.0,
+                    "max_value": 10.0,
+                    "histogram": [2, 3, 5, 7, 8, 10, 7, 4, 3, 1],
+                    "bucket_labels": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                },
+            },
+            {
+                "question_id": "q2_concern",
+                "question_text": "What is your primary concern?",
+                "distribution_type": "categorical",
+                "categorical": {
+                    "frequencies": {
+                        "Privacy": 0.35,
+                        "Complexity": 0.28,
+                        "Cost": 0.22,
+                        "None": 0.15,
+                    },
+                    "total_responses": 50,
+                },
+            },
+        ],
+    }

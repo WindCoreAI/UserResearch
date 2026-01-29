@@ -111,3 +111,47 @@ class DiscussionInteractionType(str, Enum):
     BUILDING_ON = "building_on"
     QUESTION = "question"
     NEW_POINT = "new_point"
+
+
+# Quality & Calibration Enums (Phase 4)
+
+
+class QualityStatus(str, Enum):
+    """Quality assessment status levels."""
+
+    HEALTHY = "healthy"
+    WARNING = "warning"
+    CRITICAL = "critical"
+
+
+class DriftWarningLevel(str, Enum):
+    """Drift severity levels."""
+
+    NONE = "none"
+    WARNING = "warning"
+    CRITICAL = "critical"
+
+
+class AlignmentStatus(str, Enum):
+    """Calibration alignment status."""
+
+    ALIGNED = "aligned"
+    PARTIAL = "partial"
+    DIVERGENT = "divergent"
+
+
+class RecommendationType(str, Enum):
+    """Types of calibration recommendations."""
+
+    INCREASE = "increase"
+    DECREASE = "decrease"
+    ADD = "add"
+    REMOVE = "remove"
+
+
+class RecommendationPriority(str, Enum):
+    """Priority levels for recommendations."""
+
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"

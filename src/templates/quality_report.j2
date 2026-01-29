@@ -1,0 +1,117 @@
+# Quality Analysis Report
+
+**Generated:** {{ analysis_timestamp | default("N/A") }}
+**Session Type:** {{ session_type | default("N/A") }}
+**Quality Status:** {{ quality_status }}
+**Quality Score:** {{ quality_score | round(1) }}%
+
+---
+
+## Overall Assessment
+
+{% if quality_status == "healthy" %}
+All quality gates passed. Responses are consistent with persona definitions.
+{% elif quality_status == "warning" %}
+Some quality metrics are below optimal levels. Review warnings below.
+{% else %}
+Critical quality issues detected. Responses may not be reliable.
+{% endif %}
+
+## Consistency Analysis
+
+**Overall Consistency:** {{ consistency_score | round(1) }}%
+**Big Five Score:** {{ consistency_details.big_five_score | round(1) }}%
+**Schwartz Values Score:** {{ consistency_details.schwartz_score | round(1) }}%
+
+### Big Five Trait Alignment
+
+| Trait | Value | Alignment | Matched Keywords |
+|-------|-------|-----------|-----------------|
+{% for trait in consistency_details.big_five_alignment %}
+| {{ trait.trait_name }} | {{ trait.trait_value }} | {{ trait.alignment_score | round(1) }}% | {{ trait.matched_keywords | join(", ") }} |
+{% endfor %}
+
+### Schwartz Value Alignment
+
+| Value | Alignment | Matched Keywords |
+|-------|-----------|-----------------|
+{% for val in consistency_details.schwartz_alignment %}
+| {{ val.trait_name }} | {{ val.alignment_score | round(1) }}% | {{ val.matched_keywords | join(", ") }} |
+{% endfor %}
+
+## Bias Analysis
+
+**Sycophancy Rate:** {{ bias_analysis.sycophancy_rate | round(1) }}%
+**Positive:Negative Ratio:** {{ bias_analysis.positive_negative_ratio | round(1) }}:1
+**Sentiment Clustering:** {{ "Detected" if bias_analysis.sentiment_clustering.detected else "Not detected" }}
+
+{% if bias_analysis.sycophancy_phrases_found %}
+### Detected Sycophancy Phrases
+{% for phrase in bias_analysis.sycophancy_phrases_found %}
+- "{{ phrase }}"
+{% endfor %}
+{% endif %}
+
+{% if bias_analysis.flagged_responses %}
+### Flagged Responses
+{% for flag in bias_analysis.flagged_responses %}
+- **Response {{ flag.response_index + 1 }}** ({{ flag.flag_type }}): {{ flag.flag_reason }} (confidence: {{ (flag.confidence * 100) | round(0) }}%)
+{% endfor %}
+{% endif %}
+
+{% if variance_report %}
+## Variance Analysis
+
+**Overall Rating Variance:** {{ variance_report.overall_rating_variance | round(2) }}
+**Panel Size:** {{ variance_report.panel_size }}
+**Clustering:** {{ "Detected" if variance_report.clustering_detected else "Not detected" }}
+
+### Sentiment Distribution
+
+| Sentiment | Percentage |
+|-----------|-----------|
+| Positive | {{ variance_report.sentiment_distribution.positive | round(1) }}% |
+| Negative | {{ variance_report.sentiment_distribution.negative | round(1) }}% |
+| Mixed | {{ variance_report.sentiment_distribution.mixed | round(1) }}% |
+| Neutral | {{ variance_report.sentiment_distribution.neutral | round(1) }}% |
+
+**Diversity Score:** {{ variance_report.sentiment_distribution.diversity_score | round(2) }}
+{% endif %}
+
+{% if drift_analysis %}
+## Drift Detection
+
+**Drift Score:** {{ drift_analysis.drift_score | round(1) }}%
+**Drift Detected:** {{ "Yes" if drift_analysis.drift_detected else "No" }}
+**Warning Level:** {{ drift_analysis.warning_level.value | upper }}
+
+### Segment Scores
+
+| Segment | Responses | Consistency |
+|---------|-----------|------------|
+{% for seg in drift_analysis.segment_scores %}
+| {{ seg.segment_index + 1 }} | {{ seg.start_response + 1 }}-{{ seg.end_response + 1 }} | {{ seg.consistency_score | round(1) }}% |
+{% endfor %}
+
+{% if drift_analysis.affected_traits %}
+### Affected Traits
+
+| Trait | Type | Initial | Final | Drift | Direction |
+|-------|------|---------|-------|-------|-----------|
+{% for trait in drift_analysis.affected_traits %}
+| {{ trait.trait_name }} | {{ trait.trait_type }} | {{ trait.initial_alignment | round(1) }}% | {{ trait.final_alignment | round(1) }}% | {{ trait.drift_amount | round(1) }}% | {{ trait.drift_direction }} |
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if warnings %}
+## Warnings
+
+{% for warning in warnings %}
+- {{ warning }}
+{% endfor %}
+{% endif %}
+
+---
+
+*Quality thresholds: Consistency >= {{ thresholds_used.consistency_minimum }}%, Sycophancy <= {{ thresholds_used.sycophancy_maximum }}%, Drift warning >= {{ thresholds_used.drift_warning }}%, Drift critical >= {{ thresholds_used.drift_critical }}%*

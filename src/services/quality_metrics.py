@@ -22,22 +22,32 @@ class QualityMetricsCalculator:
         "openness": [
             "curious", "innovative", "creative", "novel", "explore",
             "experiment", "imaginative", "unconventional", "new ideas",
+            "original", "artistic", "inventive", "diverse", "abstract",
+            "philosophical", "open-minded",
         ],
         "conscientiousness": [
             "organized", "planned", "thorough", "systematic", "careful",
             "detail", "discipline", "reliable", "responsible",
+            "structured", "methodical", "precise", "orderly", "diligent",
+            "meticulous", "punctual",
         ],
         "extraversion": [
             "excited", "energetic", "social", "enthusiastic", "outgoing",
             "collaborative", "team", "interact", "engaging",
+            "talkative", "sociable", "assertive", "lively", "dynamic",
+            "expressive", "vibrant",
         ],
         "agreeableness": [
             "cooperative", "helpful", "trust", "kind", "supportive",
             "understanding", "considerate", "harmony",
+            "empathetic", "compassionate", "gentle", "agreeable", "patient",
+            "tolerant", "warm",
         ],
         "neuroticism": [
             "worried", "anxious", "concerned", "stressed", "nervous",
             "uncertain", "sensitive", "overwhelmed",
+            "tense", "apprehensive", "fearful", "moody", "insecure",
+            "volatile", "distressed",
         ],
     }
 
@@ -46,22 +56,29 @@ class QualityMetricsCalculator:
         "openness": [
             "traditional", "proven", "familiar", "practical", "conventional",
             "standard", "cautious", "prefer existing",
+            "routine", "predictable", "established", "tried and true", "stable",
         ],
         "conscientiousness": [
             "flexible", "spontaneous", "adaptable", "casual", "relaxed",
             "improvise", "go with the flow",
+            "easygoing", "unstructured", "carefree", "laid-back", "informal",
         ],
         "extraversion": [
             "quiet", "reserved", "prefer solitude", "reflective", "independent",
             "thoughtful", "private", "introspective",
+            "solitary", "withdrawn", "shy", "calm", "lone", "contemplative",
         ],
         "agreeableness": [
             "skeptical", "critical", "challenge", "competitive", "direct",
             "questioning", "disagree", "doubt",
+            "stubborn", "adversarial", "blunt", "harsh", "demanding",
+            "confrontational",
         ],
         "neuroticism": [
             "calm", "stable", "relaxed", "composed", "confident",
             "resilient", "steady", "unworried",
+            "serene", "content", "secure", "optimistic", "even-tempered",
+            "peaceful",
         ],
     }
 
@@ -71,6 +88,50 @@ class QualityMetricsCalculator:
         "no concerns at all", "best thing ever", "couldn't be better",
         "nothing to improve", "wouldn't change anything",
     ]
+
+    # Schwartz value keyword mappings for value-based consistency checks
+    SCHWARTZ_VALUE_KEYWORDS = {
+        "self_direction": [
+            "independent", "freedom", "autonomous", "self-reliant", "creative",
+            "curious", "choose", "explore", "own way",
+        ],
+        "stimulation": [
+            "exciting", "varied", "daring", "adventure", "novelty",
+            "thrill", "dynamic", "challenge", "risk",
+        ],
+        "hedonism": [
+            "pleasure", "enjoy", "gratification", "fun", "comfort",
+            "leisure", "indulge", "delight",
+        ],
+        "achievement": [
+            "success", "capable", "ambitious", "influential", "accomplished",
+            "competent", "excel", "perform",
+        ],
+        "power": [
+            "authority", "wealth", "control", "dominant", "status",
+            "prestige", "lead", "command",
+        ],
+        "security": [
+            "safe", "stable", "order", "clean", "protect",
+            "secure", "reliable", "predictable", "certain",
+        ],
+        "conformity": [
+            "obedient", "polite", "respect", "proper", "appropriate",
+            "comply", "follow rules", "duty",
+        ],
+        "tradition": [
+            "humble", "devout", "custom", "heritage", "cultural",
+            "respect elders", "traditional", "values",
+        ],
+        "benevolence": [
+            "loyal", "honest", "forgiving", "responsible", "caring",
+            "generous", "nurturing", "community",
+        ],
+        "universalism": [
+            "equality", "justice", "peace", "tolerance", "broad-minded",
+            "environment", "fairness", "inclusive",
+        ],
+    }
 
     # Positive and negative keywords for ratio
     POSITIVE_KEYWORDS = [

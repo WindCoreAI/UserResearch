@@ -1,0 +1,64 @@
+# Calibration Comparison Report
+
+**Generated:** {{ comparison_timestamp | default("N/A") }}
+**Baseline:** {{ baseline_id }}
+**Overall Overlap:** {{ overall_overlap | round(1) }}%
+**Alignment Status:** {{ alignment_status.value | upper }}
+
+---
+
+## Summary
+
+{% if alignment_status.value == "aligned" %}
+Synthetic data is well-aligned with real user baselines. Distribution overlap exceeds 70%.
+{% elif alignment_status.value == "partial" %}
+Partial alignment detected. Some distributions diverge from real user data.
+{% else %}
+Significant divergence from real user baselines. Calibration adjustments recommended.
+{% endif %}
+
+**Synthetic Sample Size:** {{ synthetic_sample_size }}
+**Baseline Sample Size:** {{ baseline_sample_size }}
+
+## Per-Question Comparison
+
+| Question | Overlap | Synthetic Mean | Baseline Mean | Difference | Divergent |
+|----------|---------|---------------|---------------|------------|-----------|
+{% for q in question_comparisons %}
+| {{ q.question_id }} | {{ q.overlap_percentage | round(1) }}% | {{ q.synthetic_mean | round(1) if q.synthetic_mean is not none else "N/A" }} | {{ q.baseline_mean | round(1) if q.baseline_mean is not none else "N/A" }} | {{ q.mean_difference | round(1) if q.mean_difference is not none else "N/A" }} | {{ "Yes" if q.divergence_detected else "No" }} |
+{% endfor %}
+
+{% if divergence_points %}
+## Divergence Points
+
+{% for point in divergence_points %}
+- {{ point }}
+{% endfor %}
+{% endif %}
+
+{% if recommendations %}
+## Recommendations
+
+{% for rec in recommendations %}
+### {{ rec.recommendation_id }}
+
+- **Target:** {{ rec.target }}{% if rec.target_id %} ({{ rec.target_id }}){% endif %}
+- **Action:** {{ rec.recommendation_type.value | upper }} {{ rec.parameter }}
+{% if rec.current_value %}- **Current Value:** {{ rec.current_value }}{% endif %}
+{% if rec.suggested_value %}- **Suggested Value:** {{ rec.suggested_value }}{% endif %}
+- **Rationale:** {{ rec.rationale }}
+- **Priority:** {{ rec.priority.value | upper }}
+- **Impact:** {{ rec.impact_estimate }}
+
+{% endfor %}
+{% endif %}
+
+{% if needs_calibration %}
+---
+
+**ACTION REQUIRED:** Overall overlap is below 60%. Consider adjusting persona parameters using the recommendations above.
+{% endif %}
+
+---
+
+*Comparison performed on {{ comparison_timestamp }}*
