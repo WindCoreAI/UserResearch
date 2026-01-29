@@ -9,6 +9,8 @@ Auto-generated from all feature plans. Last updated: 2026-01-24
 - YAML files for panel definitions, JSON for session export (consistent with Phase 1) (003-multi-persona-panels)
 - Python 3.11+ (continuation from Phase 0/1/2) + PyYAML, Pydantic>=2.0, Click>=8.0, Jinja2>=3.0, Rich>=13.0, asyncio (existing), statistics (stdlib) (004-research-methods)
 - YAML files for protocol definitions (`protocols/`), JSON for session exports (004-research-methods)
+- Python 3.11+ (continuation from Phase 0-3) + PyYAML>=6.0, Pydantic>=2.0, Click>=8.0, Jinja2>=3.0, Rich>=13.0, asyncio (stdlib), statistics (stdlib) (005-quality-calibration)
+- YAML files for calibration baselines (`calibration/`), JSON for session exports (005-quality-calibration)
 
 - Python 3.11+ (wide YAML support, rich CLI libraries, rapid prototyping) + PyYAML (parsing), Pydantic (schema validation), Click (CLI), Jinja2 (templating) (001-foundation)
 
@@ -28,9 +30,9 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 Python 3.11+ (wide YAML support, rich CLI libraries, rapid prototyping): Follow standard conventions
 
 ## Recent Changes
+- 005-quality-calibration: Added Python 3.11+ (continuation from Phase 0-3) + PyYAML>=6.0, Pydantic>=2.0, Click>=8.0, Jinja2>=3.0, Rich>=13.0, asyncio (stdlib), statistics (stdlib)
 - 004-research-methods: Added Python 3.11+ (continuation from Phase 0/1/2) + PyYAML, Pydantic>=2.0, Click>=8.0, Jinja2>=3.0, Rich>=13.0, asyncio (existing), statistics (stdlib)
 - 003-multi-persona-panels: Added Python 3.11+ (continuation from Phase 0/1) + PyYAML, Pydantic, Click, Jinja2 (Phase 0/1), Rich (Phase 1), asyncio (new - for parallel execution)
-- 003-multi-persona-panels: Added [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
 
 
 <!-- MANUAL ADDITIONS START -->

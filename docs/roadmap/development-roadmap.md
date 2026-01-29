@@ -12,7 +12,7 @@ This roadmap outlines the phased development of the Synthetic User Research Plat
 | Phase 1: Single Persona MVP | ✅ Complete | 2026-01-25 |
 | Phase 2: Multi-Persona Panels | ✅ Complete | 2026-01-26 |
 | Phase 3: Research Methods | ✅ Complete | 2026-01-27 |
-| Phase 4: Quality & Calibration | 🔲 Not Started | - |
+| Phase 4: Quality & Calibration | ✅ Complete | 2026-01-28 |
 | Phase 5: Advanced Features | 🔲 Not Started | - |
 
 ---
@@ -497,68 +497,155 @@ focus_group:
     - "Comparison to alternatives"
 ```
 
-## Phase 4: Quality & Calibration
+## Phase 4: Quality & Calibration ✅ COMPLETE
+
+**Completed**: 2026-01-28 | **Branch**: `005-quality-calibration`
 
 ### Objectives
-- Implement quality metrics and monitoring
-- Build calibration pipeline against real data
-- Add consistency validation
+- [x] Implement quality metrics and monitoring
+- [x] Build calibration pipeline against real data
+- [x] Add consistency validation
+- [x] Detect sycophancy and response bias
+- [x] Monitor response variance across panels
+- [x] Detect character drift within sessions
+- [x] Generate quality reports and dashboards
 
 ### Deliverables
 
-| Deliverable | Description |
-|-------------|-------------|
-| ConsistencyChecker | Validate persona trait alignment |
-| BiasDetector | Identify sycophancy and clustering |
-| VarianceMonitor | Track response distribution |
-| CalibrationPipeline | Compare against real user baselines |
-| Quality Dashboard | Metrics visualization |
+| Deliverable | Description | Status |
+|-------------|-------------|--------|
+| ConsistencyChecker | Big Five + Schwartz trait-keyword consistency scoring | ✅ |
+| BiasDetector | Multi-signal sycophancy detection (phrases, sentiment ratio, clustering) | ✅ |
+| VarianceMonitor | Rating variance, sentiment distribution, clustering detection | ✅ |
+| DriftDetector | Session segmentation, per-segment scoring, affected trait identification | ✅ |
+| CalibrationPipeline | CSV/JSON import, histogram intersection overlap, recommendations | ✅ |
+| QualityDashboard | Session aggregation, trend calculation, threshold comparison | ✅ |
+| QualityReportGenerator | Jinja2 quality and calibration Markdown reports | ✅ |
+| Quality CLI | `research quality analyze/dashboard/report` commands | ✅ |
+| Calibration CLI | `research calibration import/list/compare` commands | ✅ |
+| Quality Models | 15 Pydantic models for quality data across all 7 user stories | ✅ |
+| Calibration Models | Thresholds, baselines, comparisons, recommendations | ✅ |
 
-### Quality Metrics Implementation
+### Implementation Summary
 
-```python
-class QualityMetrics:
-    def consistency_score(self, persona, responses) -> float:
-        """How well responses align with persona traits"""
+**New Components (127 tasks completed):**
+- `src/models/quality.py` - 15 models: TraitAlignment, ConsistencyScore, FlaggedResponse, SentimentClustering, BiasAnalysis, RatingVariance, QualitySentimentDistribution, VarianceReport, SegmentScore, AffectedTrait, DriftAnalysis, ExtendedQualityMetrics, SessionSummary, TrendDataPoint, QualityDashboardMetrics
+- `src/models/calibration.py` - QualityThresholds, NumericDistribution, CategoricalDistribution, QuestionDistribution, CalibrationBaseline, QuestionComparison, Recommendation, CalibrationComparison
+- `src/models/enums.py` - Added QualityStatus, DriftWarningLevel, AlignmentStatus, RecommendationType, RecommendationPriority
+- `src/services/consistency_checker.py` - Big Five weighted trait-keyword matching (weight = |trait_value - 5| / 5), Schwartz value alignment, per-response breakdown, composite scoring (big_five × 0.6 + schwartz × 0.4)
+- `src/services/bias_detector.py` - 15 sycophancy phrase patterns, sentiment ratio analysis, clustering detection (>80% threshold), skeptical persona validation, weighted analysis (phrases 0.25, ratio 0.25, missing_criticism 0.30, clustering 0.20)
+- `src/services/variance_monitor.py` - Rating variance with expected baselines (1-10: 2.5, 1-5: 1.2, NPS: 2.8), entropy-based sentiment diversity, clustering detection, stability checking
+- `src/services/drift_detector.py` - Session segmentation into N segments, per-segment consistency scoring, max-delta drift point detection, affected trait identification (>15pt change), warning levels (NONE <15%, WARNING 15-25%, CRITICAL >25%)
+- `src/services/calibration_pipeline.py` - CSV/JSON baseline import, YAML storage, histogram intersection overlap, alignment classification (aligned >70%, partial 60-70%, divergent <60%), persona adjustment recommendations
+- `src/services/quality_dashboard.py` - Multi-session aggregation, trend calculation, threshold comparison, overall status determination
+- `src/services/quality_report_generator.py` - Jinja2-based quality and calibration report rendering
+- `src/cli/quality_commands.py` - `research quality analyze`, `research quality dashboard`, `research quality report`
+- `src/cli/calibration_commands.py` - `research calibration import`, `research calibration list`, `research calibration compare`
+- `src/templates/quality_report.j2` - Quality report with consistency, bias, variance, drift sections
+- `src/templates/calibration_report.j2` - Calibration report with per-question comparison, divergence, recommendations
+- `calibration/baselines/` and `calibration/comparisons/` - Data storage directories
 
-    def sycophancy_rate(self, responses) -> float:
-        """Percentage of unrealistically positive responses"""
+**Features Implemented:**
+- Big Five trait-keyword consistency scoring with weighted matching based on trait deviation from neutral
+- Schwartz value alignment scoring with primary/secondary value keyword detection
+- Multi-signal sycophancy detection combining phrase matching, sentiment ratios, clustering, and missing criticism
+- Skeptical persona validation (flags when low-agreeableness personas produce all-positive responses)
+- Rating variance analysis against expected human baselines
+- Entropy-based sentiment diversity measurement
+- Character drift detection via session segmentation and consecutive segment comparison
+- Affected trait identification for drifted sessions
+- Real user data import from CSV and JSON formats
+- Histogram intersection for distribution overlap comparison
+- Persona adjustment recommendations with priority levels
+- Quality dashboard with aggregated metrics and trend tracking
+- Configurable quality thresholds (consistency minimum: 70%, sycophancy maximum: 30%, drift warning: 15%, drift critical: 25%)
+- Markdown report generation for quality analysis and calibration comparisons
+- CLI version updated to 0.4.0
 
-    def variance_score(self, panel_responses) -> float:
-        """Standard deviation compared to expected human variance"""
+**Test Coverage:**
+- 602 tests passing (unit, integration, contract)
+- test_quality_models.py (99 tests) - All 15 quality/calibration models
+- test_consistency_checker.py (16 tests) - Big Five, Schwartz, weighted scoring, thresholds
+- test_bias_detector.py (30 tests) - Phrases, sentiment ratio, clustering, skeptical validation
+- test_variance_monitor.py (21 tests) - Rating variance, distribution, clustering, stability
+- test_drift_detector.py (23 tests) - Segmentation, scoring, drift point, affected traits
+- test_calibration_models.py (49 tests) - Baselines, comparisons, thresholds
+- test_calibration_pipeline.py (23 tests) - Import, save/load, overlap, compare, recommendations
+- test_quality_dashboard.py (31 tests) - Aggregation, trends, status, thresholds
 
-    def character_drift(self, persona, session_responses) -> float:
-        """Deviation from initial persona over conversation"""
+### Implementation Architecture
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                        Quality Analysis Layer                        │
+│                                                                      │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐   │
+│  │ConsistencyChecker│  │  BiasDetector    │  │VarianceMonitor   │   │
+│  │                  │  │                  │  │                  │   │
+│  │• Big Five scoring│  │• Sycophancy      │  │• Rating variance │   │
+│  │• Schwartz align  │  │  phrases (15)    │  │• Sentiment dist  │   │
+│  │• Per-response    │  │• Sentiment ratio │  │• Clustering      │   │
+│  │  breakdown       │  │• Clustering      │  │• Stability       │   │
+│  │• Weighted: 0.6/  │  │• Skeptical check │  │• Expected baselines│ │
+│  │  0.4 composite   │  │• Weighted score  │  │                  │   │
+│  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘   │
+│           │                     │                     │              │
+│           └─────────────────────┼─────────────────────┘              │
+│                                 │                                    │
+│                    ┌────────────▼────────────┐                       │
+│                    │     DriftDetector       │                       │
+│                    │                         │                       │
+│                    │  • Session segmentation │                       │
+│                    │  • Per-segment scoring  │                       │
+│                    │  • Drift point detection│                       │
+│                    │  • Affected traits      │                       │
+│                    │  • Warning levels       │                       │
+│                    └────────────┬────────────┘                       │
+│                                 │                                    │
+└─────────────────────────────────┼────────────────────────────────────┘
+                                  │
+                    ┌─────────────┴─────────────┐
+                    ▼                           ▼
+┌──────────────────────────┐    ┌──────────────────────────┐
+│   QualityDashboard       │    │  CalibrationPipeline     │
+│                          │    │                          │
+│  • Session aggregation   │    │  • CSV/JSON import       │
+│  • Trend calculation     │    │  • Histogram intersection│
+│  • Threshold comparison  │    │  • Overlap scoring       │
+│  • Overall status        │    │  • Recommendations       │
+└────────────┬─────────────┘    └────────────┬─────────────┘
+             │                               │
+             ▼                               ▼
+┌──────────────────────────┐    ┌──────────────────────────┐
+│  QualityReportGenerator  │    │  CalibrationReport       │
+│  (quality_report.j2)     │    │  (calibration_report.j2) │
+└──────────────────────────┘    └──────────────────────────┘
 ```
 
-### Calibration Workflow
+### Quality Thresholds (Configurable Defaults)
 
-```
-┌────────────────────┐
-│ Real User Data     │
-│ (baseline corpus)  │
-└─────────┬──────────┘
-          │
-          ▼
-┌────────────────────┐     ┌────────────────────┐
-│ Run Same Questions │────▶│ Synthetic Responses│
-│ on Synthetic Panel │     │                    │
-└────────────────────┘     └─────────┬──────────┘
-                                     │
-          ┌──────────────────────────┘
-          │
-          ▼
-┌────────────────────┐
-│ Compare & Analyze  │
-│ • Response dist.   │
-│ • Theme overlap    │
-│ • Sentiment parity │
-└─────────┬──────────┘
-          │
-          ▼
-┌────────────────────┐     ┌────────────────────┐
-│ Identify Gaps      │────▶│ Refine Personas    │
-└────────────────────┘     └────────────────────┘
+| Metric | Default | Warning | Critical |
+|--------|---------|---------|----------|
+| Consistency Score | ≥70% | <80% | <70% |
+| Sycophancy Rate | ≤30% | >30% | — |
+| Positive:Negative Ratio | ≤4:1 | >4:1 | — |
+| Variance Ratio | ≥0.6× expected | <0.6× | — |
+| Clustering | ≤80% single sentiment | >80% | — |
+| Character Drift | <15% | 15-25% | >25% |
+| Calibration Overlap | >70% aligned | 60-70% partial | <60% divergent |
+
+### Usage
+
+```bash
+# Quality Analysis
+research-cli research quality analyze --session-id <id>
+research-cli research quality dashboard --sessions <dir>
+research-cli research quality report --session-id <id> --output report.md
+
+# Calibration Pipeline
+research-cli research calibration import --file baseline.csv --name "User Survey Q1" --source "Internal Survey"
+research-cli research calibration list
+research-cli research calibration compare --baseline <id> --session <id>
 ```
 
 ## Phase 5: Advanced Features
@@ -616,8 +703,8 @@ A/B Research Session:
 | Phase 1 | Single persona works | Consistent, quality responses, 138 tests | ✅ Complete |
 | Phase 2 | Panel research works | Parallel execution, aggregation, reports, 239 tests | ✅ Complete |
 | Phase 3 | Multiple methods | Survey, interview, focus group, 310 tests | ✅ Complete |
-| Phase 4 | Quality assured | Calibration pipeline running | 🔲 Next |
-| Phase 5 | Production ready | Memory, integrations, scale | 🔲 Planned |
+| Phase 4 | Quality assured | 127 tasks, 602 tests, 7 quality services, calibration pipeline | ✅ Complete |
+| Phase 5 | Production ready | Memory, integrations, scale | 🔲 Next |
 
 ## Technical Dependencies
 
@@ -652,10 +739,11 @@ A/B Research Session:
 
 ---
 
-**Version**: 1.4.0 | **Created**: 2026-01-24 | **Updated**: 2026-01-27
+**Version**: 1.5.0 | **Created**: 2026-01-24 | **Updated**: 2026-01-28
 
 ### Changelog
 
+- **1.5.0** (2026-01-28): Phase 4 Quality & Calibration completed - 127 tasks, 602 tests, ConsistencyChecker, BiasDetector, VarianceMonitor, DriftDetector, CalibrationPipeline, QualityDashboard, QualityReportGenerator
 - **1.4.0** (2026-01-27): Phase 3 Research Methods completed - 106 tasks, 310 tests, SurveyEngine, InterviewEngine, FocusGroupEngine, ProtocolLoader, 3 sample protocols
 - **1.3.0** (2026-01-26): Phase 2 Multi-Persona Panels completed - 100 tasks, 239 tests, PanelExecutor, ResponseAggregator, ReportGenerator, 4 pre-built panels
 - **1.2.0** (2026-01-25): Phase 1 Single Persona MVP completed - 78 tasks, 138 tests, SessionRunner, ResponseParser, QualityMetrics

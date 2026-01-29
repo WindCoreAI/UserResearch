@@ -26,7 +26,7 @@ console = Console()
 @click.group()
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output")
 @click.option("--quiet", "-q", is_flag=True, help="Suppress non-essential output")
-@click.version_option(version="0.3.0", prog_name="research-cli")
+@click.version_option(version="0.4.0", prog_name="research-cli")
 @click.pass_context
 def cli(ctx: click.Context, verbose: bool, quiet: bool) -> None:
     """Synthetic User Research Platform - Persona Management CLI."""
@@ -555,6 +555,22 @@ research.add_command(interview_group)
 
 from cli.focus_group_commands import focus_group_group
 research.add_command(focus_group_group)
+
+
+# ============================================================================
+# Quality Commands (Phase 4) - Register with research group
+# ============================================================================
+
+from cli.quality_commands import quality_group
+research.add_command(quality_group)
+
+
+# ============================================================================
+# Calibration Commands (Phase 4) - Register with research group
+# ============================================================================
+
+from cli.calibration_commands import calibration_group
+research.add_command(calibration_group)
 
 
 if __name__ == "__main__":
